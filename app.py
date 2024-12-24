@@ -21,10 +21,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def form():
-    stock = ["IBM", "AAPL", "MSFT"]
+    ticker = ["IBM", "AAPL", "MSFT"]
     past_duration = ["6mo", "1y"]
     #future_duration = ["30","40"]
-    return render_template('form.html', past_duration=past_duration, stock=stock)
+    return render_template('form.html', past_duration=past_duration, ticker=ticker)
 
 @app.route('/data', methods = ['POST', 'GET'])
 def data():
