@@ -66,7 +66,7 @@ def data():
                 }
             ]
         }
-        response = requests.post(INFERENCE_ENDPOINT, json=json_data)
+        response = requests.post(INFERENCE_ENDPOINT, json=json_data, verify=False)
         result = response.json()
         print(result)
         result_data = result['outputs'][0]['data']
