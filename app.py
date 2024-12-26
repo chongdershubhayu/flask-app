@@ -79,7 +79,7 @@ def data():
         df_past['Forecast'] = np.nan
         if not df_past.empty:
             df_past.at[df_past.index[-1], 'Forecast'] = df_past['Actual'].iloc[-1]
-       else:
+        else:
             app.logger.error("DataFrame df_past is empty!")
             return "Error: No data to predict."
         #df_past['Forecast'].iloc[-1] = df_past['Actual'].iloc[-1]
