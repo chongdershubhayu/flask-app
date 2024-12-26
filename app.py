@@ -76,8 +76,9 @@ def data():
         df_past = df[['Close']].reset_index()
         df_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
         df_past['Date'] = pd.to_datetime(df_past['Date'])
-        #df_past['Forecast'] = np.nan
-        df_past['Forecast'] = df_past['Forecast'].astype(float)
+        if 'Forecast' not in df_past.columns:
+            df_past['Forecast'] = np.nan
+        #df_past['Forecast'] = df_past['Forecast'].astype(float)
         if not df_past.empty:
             df_past.at[df_past.index[-1], 'Forecast'] = df_past['Actual'].iloc[-1]
         else:
