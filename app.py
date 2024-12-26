@@ -79,6 +79,8 @@ def data():
         df_past['Date'] = pd.to_datetime(df_past['Date'], errors='coerce')
         if 'Forecast' not in df_past.columns:
             df_past['Forecast'] = np.nan
+        if df_past['Date'].isna().any():
+            app.logger.warning("Some entries in 'Date' column are invalid and have been converted to NaT.")
         #df_past['Forecast'] = df_past['Forecast'].astype(float)
         if not df_past.empty:
             df_past.at[df_past.index[-1], 'Forecast'] = df_past['Actual'].iloc[-1]
