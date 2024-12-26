@@ -77,7 +77,12 @@ def data():
         df_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
         df_past['Date'] = pd.to_datetime(df_past['Date'])
         df_past['Forecast'] = np.nan
-        df_past['Forecast'].iloc[-1] = df_past['Actual'].iloc[-1]
+        if not df_past.empty:
+            df_past.at[df_past.index[-1], 'Forecast'] = df_past['Actual'].iloc[-1]
+       else:
+            app.logger.error("DataFrame df_past is empty!")
+            return "Error: No data to predict."
+        #df_past['Forecast'].iloc[-1] = df_past['Actual'].iloc[-1]
         df_future = pd.DataFrame(columns=['Date', 'Actual', 'Forecast'])
         df_future['Date'] = pd.date_range(start=df_past['Date'].iloc[-1] + pd.Timedelta(days=1), periods=n_forecast)
         df_future['Forecast'] = Y_.flatten()
