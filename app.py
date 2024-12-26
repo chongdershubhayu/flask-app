@@ -75,7 +75,8 @@ def data():
         # organize the results in a data frame
         df_past = df[['Close']].reset_index()
         df_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
-        df_past['Date'] = pd.to_datetime(df_past['Date'])
+        #df_past['Date'] = pd.to_datetime(df_past['Date'])
+        df_past['Date'] = pd.to_datetime(df_past['Date'], errors='coerce')
         if 'Forecast' not in df_past.columns:
             df_past['Forecast'] = np.nan
         #df_past['Forecast'] = df_past['Forecast'].astype(float)
