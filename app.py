@@ -101,10 +101,15 @@ def data():
         fig = Figure()
         ax = fig.subplots()
         fig.suptitle(form_data['ticker'])
-        ax.plot(results)
+        #ax.plot(results)
+        # Plot both Actual and Forecast columns
+        ax.plot(results.index, results['Actual'], label='Actual', color='blue')
+        ax.plot(results.index, results['Forecast'], label='Forecast', color='red')
+        ax.legend()  # Add a legend to distinguish Actual vs Forecast
         # Save it to a temporary buffer.
         buf = BytesIO()
         fig.savefig(buf, format="png")
+        buf.seek(0) # Reset the pointer to the beginning of the buffer
         # Embed the result in the html output.
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
         return f"<img src='data:image/png;base64,{data}'/>"
