@@ -96,6 +96,7 @@ def data():
         results = pd.concat([df_past, df_future])
         print(result)
         results = results.set_index('Date')
+        print(result)
         # Generate the figure **without using pyplot**.
         fig = Figure()
         ax = fig.subplots()
