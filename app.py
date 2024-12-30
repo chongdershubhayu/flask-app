@@ -77,6 +77,7 @@ def data():
         df_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
         #df_past['Date'] = pd.to_datetime(df_past['Date'])
         df_past['Date'] = pd.to_datetime(df_past['Date'], errors='coerce')
+        print(df_past['Date'])
         if 'Forecast' not in df_past.columns:
             df_past['Forecast'] = np.nan
         if df_past['Date'].isna().any():
@@ -93,6 +94,7 @@ def data():
         df_future['Forecast'] = Y_.flatten()
         df_future['Actual'] = np.nan
         results = pd.concat([df_past, df_future])
+        print(result)
         results = results.set_index('Date')
         # Generate the figure **without using pyplot**.
         fig = Figure()
