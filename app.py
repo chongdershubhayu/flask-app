@@ -123,8 +123,8 @@ def data():
         print("Print result data line no 122")
         print(result)
         # Final check for NaN values
-        print("NaN values in 'Actual' column:", results['Actual'].isna().sum())
-        print("NaN values in 'Forecast' column:", results['Forecast'].isna().sum())
+        print("NaN values in 'Actual' column:", result['Actual'].isna().sum())
+        print("NaN values in 'Forecast' column:", result['Forecast'].isna().sum())
         print("Check if both actual and forecast data are present")
         print(result.head())  # Check if both actual and forecast data are present
         # Generate the figure **without using pyplot**.
