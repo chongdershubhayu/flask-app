@@ -86,27 +86,45 @@ def data():
         df_past['Date'] = pd.to_datetime(df_past['Date'], errors='coerce')
         print("line no 87")
         print(df_past['Date'])
-        if 'Forecast' not in df_past.columns:
-            df_past['Forecast'] = np.nan
+        
+        # Step 2: Handle missing or invalid dates, if any.
         if df_past['Date'].isna().any():
             app.logger.warning("Some entries in 'Date' column are invalid and have been converted to NaT.")
+            df_past = df_past.dropna(subset=['Date'])
+
+        
+        if 'Forecast' not in df_past.columns:
+            df_past['Forecast'] = np.nan
         #df_past['Forecast'] = df_past['Forecast'].astype(float)
         if not df_past.empty:
             df_past.at[df_past.index[-1], 'Forecast'] = df_past['Actual'].iloc[-1]
         else:
             app.logger.error("DataFrame df_past is empty!")
             return "Error: No data to predict."
-        #df_past['Forecast'].iloc[-1] = df_past['Actual'].iloc[-1]
+        #df_past['Forecast'].iloc[-1] = df_past['Actual'].iloc[-1]    
+        # Step 3: Make sure that the last date in df_past is valid
+        last_date = df_past['Date'].iloc[-1]
+        if pd.isna(last_date):
+            return "Error: The last date in df_past is invalid!"
         df_future = pd.DataFrame(columns=['Date', 'Actual', 'Forecast'])
-        df_future['Date'] = pd.date_range(start=df_past['Date'].iloc[-1] + pd.Timedelta(days=1), periods=n_forecast)
+        #df_future['Date'] = pd.date_range(start=df_past['Date'].iloc[-1] + pd.Timedelta(days=1), periods=n_forecast)
+        df_future['Date'] = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=n_forecast)
+        if len(Y_.flatten()) != n_forecast:
+            return f"Error: The length of forecast data ({len(Y_.flatten())}) does not match n_forecast ({n_forecast})"
         df_future['Forecast'] = Y_.flatten()
         df_future['Actual'] = np.nan
-        result = pd.concat([df_past, df_future])
-        print("Print result data line no 102")
+        #result = pd.concat([df_past, df_future])
+        result = pd.concat([df_past, df_future], ignore_index=False)
+        print("Print result data line no 117")
         print(result)
-        result = result.set_index('Date')
-        print("Print result data line no 105")
+        #result = result.set_index('Date')
+        # Step 9: Sort the concatenated results by Date (ensure correct chronological order)
+        result = result.sort_values(by='Date').reset_index(drop=True)
+        print("Print result data line no 122")
         print(result)
+        # Final check for NaN values
+        print("NaN values in 'Actual' column:", results['Actual'].isna().sum())
+        print("NaN values in 'Forecast' column:", results['Forecast'].isna().sum())
         print("Check if both actual and forecast data are present")
         print(result.head())  # Check if both actual and forecast data are present
         # Generate the figure **without using pyplot**.
