@@ -93,15 +93,7 @@ def data():
             df_past = df_past.dropna(subset=['Date'])
 
         
-        if 'Forecast' not in df_past.columns:
-            df_past['Forecast'] = np.nan
-        #df_past['Forecast'] = df_past['Forecast'].astype(float)
-        if not df_past.empty:
-            df_past.at[df_past.index[-1], 'Forecast'] = df_past['Actual'].iloc[-1]
-        else:
-            app.logger.error("DataFrame df_past is empty!")
-            return "Error: No data to predict."
-        #df_past['Forecast'].iloc[-1] = df_past['Actual'].iloc[-1]    
+        
         # Step 3: Make sure that the last date in df_past is valid
         last_date = df_past['Date'].iloc[-1]
         if pd.isna(last_date):
