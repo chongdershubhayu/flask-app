@@ -35,7 +35,12 @@ def data():
         dates = request.form
         app.logger.info(request.form)
         df = yfin.download(tickers=form_data['ticker'], period=form_data['past_duration'])
+        if df.empty:
+            app.logger.error(f"No data returned for {form_data['ticker']} with period {form_data['past_duration']}")
+        else:
+            print(df.head())  # Log the first few rows of the stock data
         dataset = df['Close'].fillna(method='ffill')
+        print(dataset.head())  # Check the dataset after filling missing values
         dataset = dataset.values.reshape(-1, 1)
         scaler = MinMaxScaler(feature_range=(0, 1))
         scaler = scaler.fit(dataset)
@@ -75,6 +80,7 @@ def data():
         # organize the results in a data frame
         df_past = df[['Close']].reset_index()
         df_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
+        print(df_past.head())  # Check if the 'Actual' column is populated correctly
         #df_past['Date'] = pd.to_datetime(df_past['Date'])
         df_past['Date'] = pd.to_datetime(df_past['Date'], errors='coerce')
         print(df_past['Date'])
@@ -97,10 +103,13 @@ def data():
         print(result)
         results = results.set_index('Date')
         print(result)
+        print(results.head())  # Check if both actual and forecast data are present
         # Generate the figure **without using pyplot**.
         fig = Figure()
         ax = fig.subplots()
         fig.suptitle(form_data['ticker'])
+        print(results['Actual'].head())  # Check 'Actual' data
+        print(results['Forecast'].head())  # Check 'Forecast' data
         #ax.plot(results)
         # Plot both Actual and Forecast columns
         ax.plot(results.index, results['Actual'], label='Actual', color='blue')
