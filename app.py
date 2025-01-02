@@ -137,7 +137,7 @@ def data():
         print(result['Forecast'].head())  # Check 'Forecast' data
         #ax.plot(results)
         # Plot both Actual and Forecast columns
-        ax.plot(result.index, result['Actual'], label='Actual', color='blue')
+        #ax.plot(result.index, result['Actual'], label='Actual', color='blue')
         ax.plot(result.index, result['Forecast'], label='Forecast', color='red')
         ax.legend()  # Add a legend to distinguish Actual vs Forecast
         # Save it to a temporary buffer.
