@@ -99,21 +99,21 @@ def data():
         df_future['Date'] = pd.date_range(start=df_past['Date'].iloc[-1] + pd.Timedelta(days=1), periods=n_forecast)
         df_future['Forecast'] = Y_.flatten()
         df_future['Actual'] = np.nan
-        results = pd.concat([df_past, df_future])
+        result = pd.concat([df_past, df_future])
         print(result)
-        results = results.set_index('Date')
+        result = result.set_index('Date')
         print(result)
-        print(results.head())  # Check if both actual and forecast data are present
+        print(result.head())  # Check if both actual and forecast data are present
         # Generate the figure **without using pyplot**.
         fig = Figure()
         ax = fig.subplots()
         fig.suptitle(form_data['ticker'])
-        print(results['Actual'].head())  # Check 'Actual' data
-        print(results['Forecast'].head())  # Check 'Forecast' data
+        print(result['Actual'].head())  # Check 'Actual' data
+        print(result['Forecast'].head())  # Check 'Forecast' data
         #ax.plot(results)
         # Plot both Actual and Forecast columns
-        ax.plot(results.index, results['Actual'], label='Actual', color='blue')
-        ax.plot(results.index, results['Forecast'], label='Forecast', color='red')
+        ax.plot(results.index, result['Actual'], label='Actual', color='blue')
+        ax.plot(results.index, result['Forecast'], label='Forecast', color='red')
         ax.legend()  # Add a legend to distinguish Actual vs Forecast
         # Save it to a temporary buffer.
         buf = BytesIO()
