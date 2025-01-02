@@ -80,9 +80,11 @@ def data():
         # organize the results in a data frame
         df_past = df[['Close']].reset_index()
         df_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
+        print("Check if the 'Actual' column is populated correctly")
         print(df_past.head())  # Check if the 'Actual' column is populated correctly
         #df_past['Date'] = pd.to_datetime(df_past['Date'])
         df_past['Date'] = pd.to_datetime(df_past['Date'], errors='coerce')
+        print("line no 87")
         print(df_past['Date'])
         if 'Forecast' not in df_past.columns:
             df_past['Forecast'] = np.nan
@@ -100,15 +102,20 @@ def data():
         df_future['Forecast'] = Y_.flatten()
         df_future['Actual'] = np.nan
         result = pd.concat([df_past, df_future])
+        print("Print result data line no 102")
         print(result)
         result = result.set_index('Date')
+        print("Print result data line no 105")
         print(result)
+        print("Check if both actual and forecast data are present")
         print(result.head())  # Check if both actual and forecast data are present
         # Generate the figure **without using pyplot**.
         fig = Figure()
         ax = fig.subplots()
         fig.suptitle(form_data['ticker'])
+        print("Check 'Actual' data")
         print(result['Actual'].head())  # Check 'Actual' data
+        print("Check 'Forecast' data")
         print(result['Forecast'].head())  # Check 'Forecast' data
         #ax.plot(results)
         # Plot both Actual and Forecast columns
