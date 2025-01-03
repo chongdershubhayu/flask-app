@@ -91,8 +91,6 @@ def data():
         if df_past['Date'].isna().any():
             app.logger.warning("Some entries in 'Date' column are invalid and have been converted to NaT.")
             df_past = df_past.dropna(subset=['Date'])
-
-        
         
         # Step 3: Make sure that the last date in df_past is valid
         last_date = df_past['Date'].iloc[-1]
